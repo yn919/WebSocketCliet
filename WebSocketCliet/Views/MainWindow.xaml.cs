@@ -21,7 +21,7 @@ namespace WebSocketCliet.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainViewModel mainViewModel;
+        private MainViewModel mainViewModel { get; }
 
         public MainWindow()
         {
@@ -36,8 +36,8 @@ namespace WebSocketCliet.Views
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            mainViewModel.Dispose();
             mainViewModel.End();
+            mainViewModel.Dispose();
         }
     }
 }
