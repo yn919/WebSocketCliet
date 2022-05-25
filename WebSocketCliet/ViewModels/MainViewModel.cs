@@ -11,14 +11,12 @@ namespace WebSocketCliet.ViewModels
     {
         private MainModel innerModel;
 
-        public ConfigsViewModel configsViewModel { get; set; }
         public WSClientViewModel wsClientViewModel { get; set; }
 
         public MainViewModel()
         {
             innerModel = new MainModel();
 
-            configsViewModel = new ConfigsViewModel(innerModel.configs);
             wsClientViewModel = new WSClientViewModel(innerModel.wsClient);
         }
 
@@ -34,7 +32,6 @@ namespace WebSocketCliet.ViewModels
 
         public void Dispose()
         {
-            configsViewModel.Dispose();
             wsClientViewModel.Dispose();
         }
     }

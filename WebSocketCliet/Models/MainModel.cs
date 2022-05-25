@@ -8,13 +8,11 @@ namespace WebSocketCliet.Models
 {
     class MainModel
     {
-        public Configs configs { get; }
         public WSClient wsClient { get; }
 
         public MainModel()
         {
-            configs = new Configs();
-            wsClient = new WSClient(configs);
+            wsClient = new WSClient();
         }
 
         public async Task Start()

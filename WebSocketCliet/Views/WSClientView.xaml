@@ -7,6 +7,18 @@
              mc:Ignorable="d" 
              >
     <DockPanel Margin="10">
+        <GroupBox DockPanel.Dock="Top" Header="config" Margin="0,5">
+            <StackPanel Orientation="Vertical">
+                <DockPanel Margin="0,5">
+                    <Label DockPanel.Dock="Left" Content="IPAddress:" Margin="5,0,0,0" Width="80"/>
+                    <TextBox Text="{Binding ipAddress.Value}" />
+                </DockPanel>
+                <DockPanel Margin="0,5">
+                    <Label DockPanel.Dock="Left" Content="Port:" Margin="5,0,0,0" Width="80"/>
+                    <TextBox Text="{Binding port.Value}" />
+                </DockPanel>
+            </StackPanel>
+        </GroupBox>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5,0,5,10">
             <Button Content="Reconnect" Command="{Binding reconnectCommand}" Width="80" />
             <Label Content="{Binding connectedState.Value}" Foreground="{Binding connectedStateColor.Value}" />

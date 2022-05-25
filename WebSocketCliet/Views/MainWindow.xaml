@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="WebSocketClient" Height="350" Width="300">
     <DockPanel>
-        <local:ConfigsView DockPanel.Dock="Top" DataContext="{Binding configsViewModel}" />
         <local:WSClientView DataContext="{Binding wsClientViewModel}" />
     </DockPanel>
 </Window>

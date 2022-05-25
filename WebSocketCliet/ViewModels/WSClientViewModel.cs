@@ -15,6 +15,8 @@ namespace WebSocketCliet.ViewModels
     {
         private WSClient innerModel;
 
+        public ReactiveProperty<string> ipAddress { get; }
+        public ReactiveProperty<int> port { get; }
         public ReactiveProperty<bool> isConnected { get; }
         public ReadOnlyReactiveProperty<string> connectedState { get; }
         public ReadOnlyReactiveProperty<SolidColorBrush> connectedStateColor { get; }
@@ -27,6 +29,8 @@ namespace WebSocketCliet.ViewModels
         {
             this.innerModel = innerModel;
 
+            ipAddress = innerModel.ToReactivePropertyAsSynchronized(x => x.ipAddress);
+            port = innerModel.ToReactivePropertyAsSynchronized(x => x.port);
             isConnected = innerModel.ToReactivePropertyAsSynchronized(x => x.isConnected);
             connectedState = isConnected.Select(x => x == true ? "connected" : "disconnected").ToReadOnlyReactiveProperty();
             connectedStateColor = isConnected.Select(x => x == true ? Brushes.LightGreen : Brushes.Red).ToReadOnlyReactiveProperty();

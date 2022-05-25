@@ -10,9 +10,30 @@ namespace WebSocketCliet.Models
 {
     public class WSClient : NotifyPropertyChanged
     {
-        private Configs configs;
         private ClientWebSocket ws;
         private int bufferSize = 1024;
+
+        private string _ipAddress = "127.0.0.1";
+        public string ipAddress
+        {
+            get { return _ipAddress; }
+            set
+            {
+                _ipAddress = value;
+                RaisePropertyChange();
+            }
+        }
+
+        private int _port = 19900;
+        public int port
+        {
+            get { return _port; }
+            set
+            {
+                _port = value;
+                RaisePropertyChange();
+            }
+        }
 
         private bool _isConnected = false;
         public bool isConnected
@@ -47,15 +68,14 @@ namespace WebSocketCliet.Models
             }
         }
 
-        public WSClient(Configs configs)
+        public WSClient()
         {
-            this.configs = configs;
         }
 
         public async Task ConnectAsync()
         {
             ws = new ClientWebSocket();
-            Uri uri = new Uri($"ws://{configs.ipAddress}:{configs.port}/ws/");
+            Uri uri = new Uri($"ws://{ipAddress}:{port}/ws/");
 
             try
             {
