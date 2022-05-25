@@ -10,11 +10,11 @@
         <GroupBox DockPanel.Dock="Top" Header="config" Margin="0,5">
             <StackPanel Orientation="Vertical">
                 <DockPanel Margin="0,5">
-                    <Label DockPanel.Dock="Left" Content="IPAddress:" Margin="5,0,0,0" Width="80"/>
+                    <Label DockPanel.Dock="Left" Content="IPAddress：" Width="80"/>
                     <TextBox Text="{Binding ipAddress.Value}" />
                 </DockPanel>
                 <DockPanel Margin="0,5">
-                    <Label DockPanel.Dock="Left" Content="Port:" Margin="5,0,0,0" Width="80"/>
+                    <Label DockPanel.Dock="Left" Content="Port：" Width="80"/>
                     <TextBox Text="{Binding port.Value}" />
                 </DockPanel>
             </StackPanel>
