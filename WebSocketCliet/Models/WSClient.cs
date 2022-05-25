@@ -55,16 +55,22 @@ namespace WebSocketCliet.Models
         public async Task ConnectAsync()
         {
             ws = new ClientWebSocket();
-            Uri uri = new Uri($"ws:{configs.ipAddress}:{configs.port}/ws/");
+            Uri uri = new Uri($"ws://{configs.ipAddress}:{configs.port}/ws/");
 
-            await ws.ConnectAsync(uri, CancellationToken.None);
-
-            isConnected = true;
+            try
+            {
+                await ws.ConnectAsync(uri, CancellationToken.None);
+                isConnected = true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
         }
 
         public async Task DisconnectAsync()
         {
-            if(ws != null)
+            if(ws != null && isConnected == true)
             {
                 await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "close async", CancellationToken.None);
                 await ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "close output async", CancellationToken.None);
@@ -76,6 +82,12 @@ namespace WebSocketCliet.Models
             }
         }
 
+        public async Task Reconnect()
+        {
+            await DisconnectAsync();
+            await ConnectAsync();
+            await StartReceiveAsync();
+        }
         public async Task SendAsync()
         {
             if (isConnected == false) return;

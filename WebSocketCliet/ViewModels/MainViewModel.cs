@@ -22,17 +22,20 @@ namespace WebSocketCliet.ViewModels
             wsClientViewModel = new WSClientViewModel(innerModel.wsClient);
         }
 
-        public void Start()
+        public async void Start()
         {
-            innerModel.Start();
+            await innerModel.Start();
+        }
+
+        public async void End()
+        {
+            await innerModel.End();
         }
 
         public void Dispose()
         {
             configsViewModel.Dispose();
             wsClientViewModel.Dispose();
-
-            innerModel.End();
         }
     }
 }

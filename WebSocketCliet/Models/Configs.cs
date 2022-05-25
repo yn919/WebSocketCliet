@@ -19,7 +19,7 @@ namespace WebSocketCliet.Models
             }
         }
 
-        private int _port = 91900;
+        private int _port = 19900;
         public int port 
         {
             get { return _port; }

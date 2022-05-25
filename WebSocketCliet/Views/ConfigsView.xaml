@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="WebSocketCliet.Views.ConfigsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WebSocketCliet.Views"
+             mc:Ignorable="d" 
+             >
+    <StackPanel Orientation="Vertical" Margin="10">
+        <StackPanel Orientation="Horizontal" Margin="0,5">
+            <Label Content="IPAddress:" Margin="5,0,0,0" Width="80"/>
+            <TextBox Text="{Binding ipAddress.Value}" Width="100" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,5">
+            <Label Content="Port:" Margin="5,0,0,0" Width="80"/>
+            <TextBox Text="{Binding port.Value}" Width="100" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

@@ -8,8 +8,8 @@ namespace WebSocketCliet.Models
 {
     class MainModel
     {
-        public Configs configs { get; };
-        public WSClient wsClient { get; };
+        public Configs configs { get; }
+        public WSClient wsClient { get; }
 
         public MainModel()
         {
@@ -17,14 +17,15 @@ namespace WebSocketCliet.Models
             wsClient = new WSClient(configs);
         }
 
-        public void Start()
+        public async Task Start()
         {
-
+            await wsClient.ConnectAsync();
+            await wsClient.StartReceiveAsync();
         }
 
-        public void End()
+        public async Task End()
         {
-
+            await wsClient.DisconnectAsync();
         }
     }
 }
