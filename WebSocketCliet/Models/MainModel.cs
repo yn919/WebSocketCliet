@@ -21,9 +21,9 @@ namespace WebSocketCliet.Models
             await wsClient.StartReceiveAsync();
         }
 
-        public async Task End()
+        public void End()
         {
-            await wsClient.DisconnectAsync();
+            wsClient.Disconnect();
         }
     }
 }

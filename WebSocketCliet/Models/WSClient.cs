@@ -13,7 +13,7 @@ namespace WebSocketCliet.Models
         private ClientWebSocket ws;
         private int bufferSize = 1024;
 
-        private string _ipAddress = "127.0.0.1";
+        private string _ipAddress = "localhost";
         public string ipAddress
         {
             get { return _ipAddress; }
@@ -24,7 +24,7 @@ namespace WebSocketCliet.Models
             }
         }
 
-        private int _port = 51990;
+        private int _port = 51999;
         public int port
         {
             get { return _port; }
@@ -75,7 +75,8 @@ namespace WebSocketCliet.Models
         public async Task ConnectAsync()
         {
             ws = new ClientWebSocket();
-            Uri uri = new Uri($"ws://{ipAddress}:{port}/ws/");
+            string changeIPAddress = ipAddress == "127.0.0.1" ? "localhost" : ipAddress;
+            Uri uri = new Uri($"ws://{changeIPAddress}:{port}/ws/");
 
             try
             {
@@ -85,16 +86,14 @@ namespace WebSocketCliet.Models
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
+                Disconnect();
             }
         }
 
-        public async Task DisconnectAsync()
+        public void Disconnect()
         {
             if(ws != null && isConnected == true)
             {
-                await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "close async", CancellationToken.None);
-                await ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "close output async", CancellationToken.None);
-                
                 ws.Dispose();
                 ws = null;
 
@@ -104,7 +103,7 @@ namespace WebSocketCliet.Models
 
         public async Task Reconnect()
         {
-            await DisconnectAsync();
+            Disconnect();
             await ConnectAsync();
             await StartReceiveAsync();
         }
@@ -112,7 +111,13 @@ namespace WebSocketCliet.Models
         {
             if (isConnected == false) return;
 
-            byte[] sendBuffer = Encoding.UTF8.GetBytes(sendMessage);
+            byte[] sendBuffer = new byte[bufferSize];
+            byte[] stringBuffer = Encoding.UTF8.GetBytes(sendMessage);
+
+            if (bufferSize < stringBuffer.Length) return;
+
+            Array.Copy(stringBuffer, 0, sendBuffer, 0, stringBuffer.Length);
+
             ArraySegment<byte> segment = new ArraySegment<byte>(sendBuffer);
 
             await ws.SendAsync(segment, WebSocketMessageType.Text, false, CancellationToken.None);
@@ -124,27 +129,22 @@ namespace WebSocketCliet.Models
 
             byte[] buffer = new byte[bufferSize];
 
-            while(true)
+            while (true)
             {
-                ArraySegment<byte> segment = new ArraySegment<byte>(buffer);
-
-                WebSocketReceiveResult result = await ws.ReceiveAsync(segment, CancellationToken.None);
-
-                int count = result.Count;
-                while (!result.EndOfMessage)
+                try
                 {
-                    if (count >= buffer.Length)
-                    {
-                        await DisconnectAsync();
-                        return;
-                    }
-                    segment = new ArraySegment<byte>(buffer, count, buffer.Length - count);
-                    result = await ws.ReceiveAsync(segment, CancellationToken.None);
+                    ArraySegment<byte> segment = new ArraySegment<byte>(buffer);
 
-                    count += result.Count;
+                    WebSocketReceiveResult result = await ws.ReceiveAsync(segment, CancellationToken.None);
+
+                    receiveMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
                 }
-
-                receiveMessage = Encoding.UTF8.GetString(buffer, 0, count);
+                catch(Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                    Disconnect();
+                    break;
+                }
             }
         }
     }
